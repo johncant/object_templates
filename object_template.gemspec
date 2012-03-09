@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = ObjectTemplates::VERSION
   s.authors     = ["John Cant", "Arkadiusz Turlewicz"]
   s.email       = ["a.johncant@gmail.com", "arekt@gmail.com"]
-  s.homepage    = "www.behiring.com"
+  s.homepage    = "http://www.behiring.com"
   s.summary     = "templating gem"
   s.description = "gem for allowing users to make fairly simple templates. This is used for bulk emailing"
 
