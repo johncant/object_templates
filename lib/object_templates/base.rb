@@ -1,3 +1,7 @@
+class NoTemplateGivenError < StandardError ; end
+class NoResolverGivenError < StandardError ; end
+
+
 module ObjectTemplates
   module Base
     def self.included(kl)
@@ -6,9 +10,10 @@ module ObjectTemplates
 
     module InstanceMethods
 
-       def render(&block)
-        resolver = self::Resolver.new.template_resolver
+      def evaluate_object_template(&block)
+        resolver = self.class.class_variable_get(:@@resolver).new
         yield(resolver)
+        resolver.resolve(self.instance_variable_get(self.class.class_variable_get(:@@template_attr)))
         # Rendering logic goes here:
 
         # Find all [[]] templates
@@ -24,12 +29,11 @@ module ObjectTemplates
 
   module ClassMethods
 
-    def object_template
+    def acts_as_object_template(options)
       include ObjectTemplates::Base::InstanceMethods
-      extend ObjectTemplates::Base::ClassMethods
 
-      validates :body, :presence => true
-      
+      self.send :class_variable_set, :@@template_attr, ("@"+(options[:template] || throw(NoTemplateGivenError)).to_s).to_sym
+      self.send :class_variable_set, :@@resolver, (options[:resolver] || throw(NoResolverGivenError))
 
     end
 

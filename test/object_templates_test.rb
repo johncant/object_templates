@@ -1,32 +1,36 @@
-require './test_helper'
+require 'rubygems'
+require 'test/unit'
+require 'object_templates'
+
 
 class FooTemplate
   def initialize(c)
     @content = c
   end
 
-  acts_as_object_template :template => :content, :resolver => Resolver
 
-  class Resolver < ObjectTemplates::Resolver
-    attr_accessor :founder
+  class Resolver < ::ObjectTemplates::Resolver
+    attr_accessor :cofounder
     def template_resolver
-      {:website_name => "behiring"}
-      {:founder => lambda do @founder end}
+      {:website_name => "BeHiring",
+       :cofounder => lambda do @cofounder end}
     end
   end
 
+  acts_as_object_template :template => :content, :resolver => Resolver
+
 end
 
-class ObjectTemplatesTest < ActiveSupport::TestCase
-  FooTemplate
+class ObjectTemplatesTest < Test::Unit::TestCase
 
-  test "template a string with one simple value" do
+  def test_object_templating
 
-    tmpl = FooTemplate.new("Our website is called [[ website_name ]].")
+    tmpl = FooTemplate.new("I am [[ cofounder.name ]] and our website is called [[ website_name ]].")
     result = tmpl.evaluate_object_template do |r|
       # Don't need any config here
+      r.cofounder = {:name => "John Cant"}
     end
-    assert_equal "Our website is called behiring.", result
+    assert_equal "I am John Cant and our website is called BeHiring.", result
 
   end
 end
