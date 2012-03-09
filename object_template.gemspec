@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = "gem for allowing users to make fairly simple templates. This is used for bulk emailing"
 
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_development_dependency "sqlite3"
